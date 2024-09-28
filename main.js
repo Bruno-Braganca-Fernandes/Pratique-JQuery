@@ -9,6 +9,6 @@ $("form").on('submit', function (e) {
     $(`<button class="edit-todo">Editar tarefa</button>`).appendTo(newListItem)
     $(`<button class="remove-todo">Remover tarefa</button>`).appendTo(newListItem)
     $((`.todo-list`)).append(newListItem)
-    task="aaaaaaa"
+    $(".todo-input").val(' ')
 })
 
