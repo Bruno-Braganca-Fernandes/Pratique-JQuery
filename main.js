@@ -6,9 +6,9 @@ $(".list-item-input").on('submit', function (e) {
         const newListItem = $(`<li>${task}</li>`)
         const buttonsDiv = $('<div class="action-buttons hide"></div>')
 
-        $(`<button class="finish-todo">Marcar tarefa</button>`).appendTo(buttonsDiv)
-        $(`<button class="edit-todo">Editar tarefa</button>`).appendTo(buttonsDiv)
-        $(`<button class="remove-todo">Remover tarefa</button>`).appendTo(buttonsDiv)
+        $(`<button class="finish-todo">Completar</button>`).appendTo(buttonsDiv)
+        $(`<button class="edit-todo">Editar</button>`).appendTo(buttonsDiv)
+        $(`<button class="remove-todo">Remover</button>`).appendTo(buttonsDiv)
 
         newListItem.append(buttonsDiv)
         $(`.todo-list`).append(newListItem)
