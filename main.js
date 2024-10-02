@@ -2,27 +2,29 @@
 $(".list-item-input").on('submit', function (e) {
     e.preventDefault()
     const task = $(".todo-input").val()
-    if (task.trim()) {
-        const newListItem = $(`<li>${task}</li>`)
+    if (task.trim() !== '') {
+        const newListItem = $("<li></li>")
+        const taskTextDiv = $(`<div class="todo-item-text">${task}</div>`);
         const buttonsDiv = $('<div class="action-buttons hide"></div>')
 
-        $(`<button class="finish-todo">Completar</button>`).appendTo(buttonsDiv)
-        $(`<button class="edit-todo">Editar</button>`).appendTo(buttonsDiv)
-        $(`<button class="remove-todo">Remover</button>`).appendTo(buttonsDiv)
+        const finishButton = $(`<button class="finish-todo">Completar</button>`).appendTo(buttonsDiv)
+        const editButton = $(`<button class="edit-todo">Editar</button>`).appendTo(buttonsDiv)
+        const removeButton = $(`<button class="remove-todo">Remover</button>`).appendTo(buttonsDiv)
 
-        newListItem.append(buttonsDiv)
+        buttonsDiv.append(finishButton, editButton, removeButton)
+        newListItem.append(taskTextDiv, buttonsDiv)
         $(`.todo-list`).append(newListItem)
         $(".todo-input").val('')
     }
 })
 
-$(".todo-list").on('click', 'li', function () {
-    const buttonsDiv = $(this).find('.action-buttons')
-    buttonsDiv.toggleClass('hide')
-})
+$(".todo-list").on('click', '.todo-item-text', function () {
+    $(this).siblings('.action-buttons').toggleClass('hide');
+});
+
 
 $(".todo-list").on('click', '.finish-todo', function () {
-    $(this).parent().parent().toggleClass('completed')
+    $(this).closest('li').find('.todo-item-text').toggleClass('completed');
 })
 
 $(".todo-list").on('click', '.remove-todo', function () {
@@ -38,9 +40,10 @@ $(".todo-list").on('click', '.edit-todo', function (e) {
 
     const editLabel = $('<p>Edite a sua tarefa:</p>')
     const editInput = $(`<input type="text" class="edit-input" value="${currentText}"/>`)
-    listItem.html(editLabel).append(editInput)
-    $(`<button class="save-edit">Salvar</button>`).appendTo(listItem)
-    editInput.focus()
+    const saveButton = $('<button class="save-edit">Salvar</button>');
+
+    listItem.empty().append(editLabel, editInput, saveButton);
+    editInput.focus();
 })
 
 $(".todo-list").on('click', '.save-edit', function () {
@@ -48,11 +51,14 @@ $(".todo-list").on('click', '.save-edit', function () {
     const listItem = $(this).parent()
     const updatedTask = listItem.find('.edit-input').val()
 
-    listItem.removeClass('editing')
-    listItem.html(`${updatedTask}`)
-    const buttonsDiv = $('<div class="action-buttons hide"></div>')
-    $(`<button class="finish-todo">Marcar tarefa</button>`).appendTo(buttonsDiv)
-    $(`<button class="edit-todo">Editar tarefa</button>`).appendTo(buttonsDiv)
-    $(`<button class="remove-todo">Remover tarefa</button>`).appendTo(buttonsDiv)
-    listItem.append(buttonsDiv)
+    const taskTextDiv = $(`<div class="todo-item-text">${updatedTask}</div>`);
+    const buttonsDiv = $('<div class="action-buttons"></div>');
+
+    const finishButton = $(`<button class="finish-todo">Completar</button>`);
+    const editButton = $(`<button class="edit-todo">Editar</button>`);
+    const removeButton = $(`<button class="remove-todo">Remover</button>`);
+
+    buttonsDiv.append(finishButton, editButton, removeButton);
+
+    listItem.empty().append(taskTextDiv, buttonsDiv);
 })

@@ -96,7 +96,7 @@ button.remove-todo {
     gap: 10px;
 }
 
-.completed {
+.todo-item-text.completed {
     text-decoration: line-through;
     color: gray;
 }
