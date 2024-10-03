@@ -24,7 +24,10 @@ $(".todo-list").on('click', '.todo-item-text', function () {
 
 
 $(".todo-list").on('click', '.finish-todo', function () {
-    $(this).closest('li').find('.todo-item-text').toggleClass('completed');
+    const listItem = $(this).closest('li');
+    listItem.find('.todo-item-text').toggleClass('completed');
+
+    listItem.find('.action-buttons').addClass('hide');
 })
 
 $(".todo-list").on('click', '.remove-todo', function () {
@@ -32,17 +35,18 @@ $(".todo-list").on('click', '.remove-todo', function () {
 })
 
 $(".todo-list").on('click', '.edit-todo', function (e) {
-    const listItem = $(this).parent().parent().addClass('editing')
-
-    const currentText = listItem.contents().filter(function () {
-        return this.nodeType === 3
-    }).text().trim()
+    const listItem = $(this).closest('li');
+    const taskTextDiv = listItem.find('.todo-item-text');
+    const currentText = taskTextDiv.text().trim();
 
     const editLabel = $('<p>Edite a sua tarefa:</p>')
     const editInput = $(`<input type="text" class="edit-input" value="${currentText}"/>`)
     const saveButton = $('<button class="save-edit">Salvar</button>');
 
-    listItem.empty().append(editLabel, editInput, saveButton);
+    const editContainer = $('<div style="text-align: center;"></div>'); // Container centralizado
+    editContainer.append(editLabel, editInput, saveButton);
+
+    listItem.empty().append(editContainer);
     editInput.focus();
 })
 
@@ -52,7 +56,7 @@ $(".todo-list").on('click', '.save-edit', function () {
     const updatedTask = listItem.find('.edit-input').val()
 
     const taskTextDiv = $(`<div class="todo-item-text">${updatedTask}</div>`);
-    const buttonsDiv = $('<div class="action-buttons"></div>');
+    const buttonsDiv = $('<div class="action-buttons hide"></div>');
 
     const finishButton = $(`<button class="finish-todo">Completar</button>`);
     const editButton = $(`<button class="edit-todo">Editar</button>`);
@@ -61,4 +65,6 @@ $(".todo-list").on('click', '.save-edit', function () {
     buttonsDiv.append(finishButton, editButton, removeButton);
 
     listItem.empty().append(taskTextDiv, buttonsDiv);
+
+    buttonsDiv.addClass('hide')
 })
